@@ -25,9 +25,12 @@
                     <div class="date">
                         <p>published: {{ post.published_date }}</p>
                     </div>
-                    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a> {{post.author}}</h1>
+                    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
                     <p>{{ post.text|linebreaksbr }}</p>
 		    <a href="{% url 'post_detail' pk=post.pk %}">Commentaires: {{ post.approved_comments.count }}</a>
+                    <div class="date">
+                        Auteur: {{post.author}}
+                    </div>
                     <hr/>
                 </div>
             {% endfor %}
