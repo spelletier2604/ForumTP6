@@ -5,10 +5,19 @@ from django.shortcuts import render, get_object_or_404
 from .forms import PostForm, CommentForm
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date').reverse()
+    posts_list = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date').reverse()
+    paginator = Paginator(posts_list, 5)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
     return render(request, 'forum/post_list.html', {'posts': posts})
 
 def post_detail(request, pk):
